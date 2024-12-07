@@ -61,3 +61,32 @@ match self {
     }
 }
 ```
+
+
+
+## 📝 **Difference Between `static` and `const` in Rust**
+
+---
+
+| **Feature**         | **`const`**                      | **`static`**                      |
+|--------------------|-----------------------------------|-------------------------------------|
+| **Memory Location** | No fixed memory location (inlined at each use) | Fixed memory location (same address for entire program) |
+| **Lifetime**        | Exists only in the scope where it's used | Lives for the entire lifetime of the program |
+| **Mutability**      | Always immutable                  | Can be mutable with `static mut` (unsafe) |
+| **Initialization**  | Must be initialized with a **constant expression** | Can be initialized with runtime-computed values |
+| **Usage**           | Compile-time constants (like `PI`, limits) | Global shared variables (like config, large data) |
+| **Memory Overhead** | Each use has its own copy         | Single copy in memory, accessible from multiple places |
+| **Access**          | Copied into each usage location   | Referenced via a fixed memory address |
+| **Mutability Safety**| Safe (no unsafe required)        | Unsafe required for `static mut` access |
+| **Data Size**       | Suitable for small, fixed-size data | Can hold large, complex data structures |
+| **Common Use Cases**| Constants, magic numbers, simple expressions | Global configuration, shared state, large data |
+
+---
+
+### **📘 Summary**
+
+- Use **`const`** for **small, compile-time constants** like numbers, limits, or magic values.  
+- Use **`static`** for **global variables or large data** shared across the entire program.  
+- **Avoid `static mut`** unless absolutely necessary, as it requires `unsafe` and can lead to data races.  
+
+---
