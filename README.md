@@ -90,3 +90,8 @@ match self {
 - **Avoid `static mut`** unless absolutely necessary, as it requires `unsafe` and can lead to data races.  
 
 ---
+
+## `From` & `Into`
+
+- From and Into traits are inherently linked  and this is actually part of its implementation
+- If we can convert type A to type B then we can easily convert type B to type A
