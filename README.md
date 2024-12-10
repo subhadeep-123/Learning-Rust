@@ -95,3 +95,10 @@ match self {
 
 - From and Into traits are inherently linked  and this is actually part of its implementation
 - If we can convert type A to type B then we can easily convert type B to type A
+
+## Difference Between `..` and `..=` in Rust
+
+| Operator | Name              | Description                        | Example        |
+|----------|-------------------|------------------------------------|----------------|
+| `..`     | Exclusive Range   | Creates a range excluding the end | `1..5` → `1, 2, 3, 4` |
+| `..=`    | Inclusive Range   | Creates a range including the end | `1..=5` → `1, 2, 3, 4, 5` |
