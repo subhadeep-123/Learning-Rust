@@ -188,3 +188,27 @@ Rust's match ergonomics simplify how you work with references by:
 ## **Rust Match Guards**
 
 - A match guard in Rust is an additional conditional check that you can apply to a match arm using the if keyword. It acts as a filter to decide whether a particular arm should be selected when the pattern matches.
+
+## 🔍 **Difference between `if-let` and `let-else` in Rust
+
+| **Criteria**           | **`if-let`**                            | **`let-else`**                          |
+|-----------------------|------------------------------------------|------------------------------------------|
+| **Purpose**            | Pattern matching with optional control flow | Pattern matching with early exit  |
+| **Syntax**             | `if let Pattern = value { ... } else { ... }` | `let Pattern = value else { ... };` |
+| **Usage**              | Used when you want to handle both success and failure cases | Used when you want to exit early on failure |
+| **Control Flow**       | Continues with program flow after handling the pattern | Exits early using `return`, `break`, or `panic!` |
+| **Requires an `else`?**| No, but you can add it optionally         | **Yes, `else` is mandatory**            |
+| **Early Return?**      | ❌ No, unless explicitly written          | ✅ Yes, it requires early return logic  |
+| **Readability**        | Cleaner for inline flow control         | Cleaner for early-exit control flow     |
+| **When to Use?**       | When you want to handle both branches    | When you want to exit early on failure  |
+
+---
+
+### 🧠 **When to Use Which?**
+
+| **Use Case**           | **Which to Use?**             | **Reason**                              |
+|-----------------------|---------------------------------|------------------------------------------|
+| Handle both cases (`Some` / `None`) | **`if-let`**     | Cleaner when handling both possibilities |
+| Early return or exit on `None`      | **`let-else`**   | Clean, avoids unnecessary indentation   |
+| No need for `else` clause           | **`if-let`**     | `else` is optional for `if-let`         |
+| Explicit early return, break, or panic | **`let-else`** | Built for early exits like `return`    |
