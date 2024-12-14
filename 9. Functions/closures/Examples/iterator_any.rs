@@ -1,3 +1,5 @@
+// Iterator::find is a function which iterates over an iterator and searches for the first value which satisfies some condition.
+// If none of the values satisfy the condition, it returns None
 fn main() {
     let vec1 = vec![1, 2, 3];
     let vec2 = vec![4, 5, 6];
