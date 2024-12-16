@@ -219,3 +219,12 @@ Rust's match ergonomics simplify how you work with references by:
 (modules), and manage visibility (public/private) between them.
 
 - A module is a collection of items: functions, structs, trait, impl blocks and ever other modules
+
+## **Rust Crates**
+
+- A crate is Rust's compilation unit, either a binary or library. Modules are inlined before compilation. Only crates are compiled; use `--crate-type` to specify a library.  
+
+    ```rust
+    rustc --crate-type=lib rary.rs
+    rustc executable.rs --extern rary=library.rlib && executable
+    ```
