@@ -212,3 +212,10 @@ Rust's match ergonomics simplify how you work with references by:
 | Early return or exit on `None`      | **`let-else`**   | Clean, avoids unnecessary indentation   |
 | No need for `else` clause           | **`if-let`**     | `else` is optional for `if-let`         |
 | Explicit early return, break, or panic | **`let-else`** | Built for early exits like `return`    |
+
+## **Rust Modules**
+
+- Rust provided a powerful module system that can be used to hierarchically split code in logical units
+(modules), and manage visibility (public/private) between them.
+
+- A module is a collection of items: functions, structs, trait, impl blocks and ever other modules
