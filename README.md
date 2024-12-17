@@ -228,3 +228,11 @@ Rust's match ergonomics simplify how you work with references by:
     rustc --crate-type=lib rary.rs
     rustc executable.rs --extern rary=library.rlib && executable
     ```
+
+## **Rust Cargo**
+
+`cargo` is the official Rust Package management tool. Features of `cargo` includes :-
+
+- Dependency Management and integration with crates.io.
+- Awareness of unit tests.
+- Awareness of benchmarks.
