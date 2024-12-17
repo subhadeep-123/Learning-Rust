@@ -236,3 +236,14 @@ Rust's match ergonomics simplify how you work with references by:
 - Dependency Management and integration with crates.io.
 - Awareness of unit tests.
 - Awareness of benchmarks.
+
+## **Rust Conditional Configuration Checks**
+
+Configuration conditional checks are possible through two different operators:
+
+1. **The `cfg` attribute:** `#[cfg(...)]` in attribute position
+2. **The `cfg!` macro:** `cfg!(...)` in boolean expressions
+
+While the former enables conditional compilation, the latter conditionally evaluates to `true` or `false` literals allowing for checks at run-time. Both utilize identical argument syntax.
+
+`cfg!`, unlike `#[cfg]`, does not remove any code and only evaluates to `true` or `false`. For example, all blocks in an `if/else` expression need to be valid when `cfg!` is used for the condition, regardless of what `cfg!` is evaluating.
