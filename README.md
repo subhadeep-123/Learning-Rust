@@ -247,3 +247,153 @@ Configuration conditional checks are possible through two different operators:
 While the former enables conditional compilation, the latter conditionally evaluates to `true` or `false` literals allowing for checks at run-time. Both utilize identical argument syntax.
 
 `cfg!`, unlike `#[cfg]`, does not remove any code and only evaluates to `true` or `false`. For example, all blocks in an `if/else` expression need to be valid when `cfg!` is used for the condition, regardless of what `cfg!` is evaluating.
+
+## **Phantom Types in Rust**
+
+### **1️⃣ What are Phantom Types?**
+
+Phantom types are a technique used in Rust to represent and track types at the **type level** without actually storing any values of that type at runtime. This is achieved using the `PhantomData<T>` marker from Rust’s standard library.
+
+- **Compile-Time Only**: Phantom types exist only at compile time, and they have no runtime overhead.
+- **Zero-Sized**: Since PhantomData doesn’t store any actual data, it has zero runtime size and cost.
+- **Type Marker**: It allows us to track type information even when the type isn’t directly used in the struct or enum.
+
+---
+
+### **2️⃣ Purpose of Phantom Types**
+
+Phantom types are commonly used to **track type states** and **enforce compile-time guarantees**. 
+
+#### **Use Cases**
+
+- **Type-State Pattern**: Restrict the usage of certain functions based on the type state.
+- **Compile-Time Safety**: Prevent misuse of APIs by restricting operations to specific states.
+- **Type-Level Programming**: Act as an indicator for types, such as marking a file as "Open" or "Closed".
+- **Lifetimes**: Track lifetimes in generic structs or wrappers.
+
+---
+
+### **3️⃣ What is PhantomData?**
+
+`PhantomData<T>` is a **marker type** that tells the Rust compiler that a struct or enum "logically" owns a value of type `T`, even though it doesn’t actually store it.
+
+#### **Why Use PhantomData?**
+
+1. **Type Visibility**: To make Rust’s type system aware that a struct is associated with a specific type `T`, even if it’s not used in the struct’s fields.
+2. **Zero-Cost Abstraction**: PhantomData has zero size and no impact on memory layout or runtime performance.
+3. **Ownership and Drop Semantics**: It can indicate ownership of a type to affect Rust’s drop-checking behavior.
+
+#### **Declaration Example**
+
+```rust
+use std::marker::PhantomData;
+
+struct MyStruct<T> {
+    _marker: PhantomData<T>,
+}
+```
+
+Here, `PhantomData<T>` makes Rust’s type system aware that `MyStruct` is logically associated with type `T`, even if `T` is not actually used in the struct.
+
+---
+
+### **4️⃣ Key Concepts of Phantom Types**
+
+#### **1. Type-State Pattern**
+
+- **Definition**: A pattern where the type of a struct changes to represent its "state."
+- **How**: PhantomData allows you to track the state at the type level, enabling you to have types like `File<Open>` and `File<Closed>`. 
+- **Goal**: Prevent operations on a type in an invalid state (e.g., calling `read()` on a `File<Closed>`).
+
+#### **2. Compile-Time Guarantees**
+
+- **Safety**: PhantomData allows functions to be called only when the struct is in a specific state.
+- **Type-Checked at Compile Time**: Rust’s type system will ensure you’re using the type in the right state, leading to fewer runtime errors.
+
+#### **3. Zero-Cost Abstraction**
+
+- **Memory Layout**: PhantomData does not store anything at runtime.
+- **Performance**: No runtime cost, no runtime memory usage, no effect on struct’s size.
+
+#### **4. Ownership and Drop Semantics**
+
+- If you want Rust’s ownership system to recognize that a struct "logically" owns a type `T`, even if it’s not physically stored, you use `PhantomData<T>`. This impacts Rust’s drop-checking logic.
+
+---
+
+### **5️⃣ PhantomData vs Regular Data Fields**
+
+| **Concept**         | **PhantomData<T>**          | **Normal Field T**     |
+|------------------- |---------------------------|-----------------------|
+| **Memory Usage**     | 0 bytes                    | Depends on size of `T` |
+| **Compile-Time Info**| Exists at compile-time     | Exists at runtime     |
+| **Drop Semantics**    | May affect ownership logic | Normal drop logic      |
+| **Type Tracking**     | Tracks type `T` only       | Tracks type and stores data |
+| **Cost**             | Zero-cost abstraction     | Actual memory cost    |
+
+---
+
+### **6️⃣ When to Use Phantom Types?**
+
+Phantom types are useful when you want to:
+
+1. **Track Type-State Transitions**: Ensure certain methods are only called in specific states.
+2. **Zero-Sized Type-Tracking**: Associate logical ownership of a type to affect drop-checking.
+3. **Signal Intent**: Provide compile-time indicators of type-level information.
+4. **Lifetimes Tracking**: Use PhantomData to associate lifetimes with a struct (like in smart pointers).
+
+---
+
+### **7️⃣ Benefits of Using Phantom Types**
+
+| **Benefit**         | **Description**                              |
+|------------------- |--------------------------------------------|
+| **Compile-time safety** | Restrict invalid usage of types and methods |
+| **Zero-cost abstraction** | No runtime overhead, zero memory impact  |
+| **Logical Ownership**    | Track logical ownership of types          |
+| **Cleaner API Design**   | Make APIs more robust and state-aware     |
+
+---
+
+### **8️⃣ Drawbacks of Phantom Types**
+
+| **Drawback**        | **Description**                              |
+|------------------- |--------------------------------------------|
+| **Complexity**       | May increase cognitive load for new developers |
+| **Type Bloat**       | Type annotations may get verbose             |
+| **Learning Curve**   | May require deeper understanding of Rust’s type system |
+
+---
+
+### **9️⃣ Phantom Types vs Lifetimes**
+
+| **Concept**         | **Phantom Types**          | **Lifetimes**           |
+|------------------- |---------------------------|-------------------------|
+| **Purpose**         | Track type information     | Track memory lifetimes   |
+| **Scope**           | Compile-time type tracking| Compile-time memory tracking|
+| **Used With**       | Custom state tracking     | Borrowing references     |
+
+While PhantomData can track lifetimes too, it’s often used for **type information**, while lifetimes are used for **memory tracking**.
+
+---
+
+### **🌐 Glossary**
+
+- **Phantom Type**: A type that exists only at compile-time and does not occupy memory at runtime.
+- **PhantomData**: A Rust marker type used to associate phantom types with a struct.
+- **Zero-Sized Type (ZST)**: A type that has no memory representation and takes up 0 bytes.
+- **Type-State Pattern**: A design pattern where the type of a struct reflects its "state" at compile time.
+- **Drop Semantics**: Rules that govern when and how Rust’s ownership system "drops" values to free memory.
+
+---
+
+### **🔹 Summary**
+
+1. **Phantom Types** help track **logical type ownership** and **state changes**.
+2. **PhantomData<T>** associates a type `T` with a struct or enum at compile time without storing it at runtime.
+3. Used to **enforce compile-time guarantees** and **track type-state transitions**.
+4. **Zero-cost abstraction** with **no runtime overhead**.
+5. Helps in **type-state pattern**, **lifetime tracking**, and **ownership tracking**.
+
+If you'd like to see an example of these concepts, I can provide one. Let me know if you'd like any of these points elaborated!
+
